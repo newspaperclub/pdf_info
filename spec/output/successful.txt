@@ -1,0 +1,22 @@
+Creator:        Adobe InDesign CS2 (4.0.5)
+Producer:       Adobe PDF Library 7.0
+CreationDate:   Mon Jun 14 13:59:52 2010
+ModDate:        Mon Jun 14 14:02:15 2010
+Tagged:         no
+Pages:          12
+Encrypted:      no
+Page    1 size: 819.213 x 1077.17 pts
+Page    2 size: 819.213 x 1077.17 pts
+Page    3 size: 819.213 x 1077.17 pts
+Page    4 size: 819.213 x 1077.17 pts
+Page    5 size: 819.213 x 1077.17 pts
+Page    6 size: 819.213 x 1077.17 pts
+Page    7 size: 819.213 x 1077.17 pts
+Page    8 size: 819.213 x 1077.17 pts
+Page    9 size: 819.213 x 1077.17 pts
+Page   10 size: 819.213 x 1077.17 pts
+Page   11 size: 819.213 x 1077.17 pts
+Page   12 size: 819.213 x 1077.17 pts
+File size:      15650809 bytes
+Optimized:      no
+PDF version:    1.4
