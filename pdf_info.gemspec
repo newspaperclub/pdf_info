@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
     "VERSION",
     "lib/pdf/info.rb",
     "lib/pdf/info/exceptions.rb",
+    "pdf_info.gemspec",
     "spec/output/successful.txt",
     "spec/pdf_info_spec.rb",
     "spec/spec_helper.rb",

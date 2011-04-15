@@ -1,7 +1,7 @@
 pdf_info
 ==
 
-Very simple wrapper to the pdfinfo unix tool, to provide the metadata information as a hash.
+Very simple wrapper to the [pdfinfo](http://linuxcommand.org/man_pages/pdfinfo1.html) unix tool, to provide the metadata information as a hash.
 
 Example
 --
@@ -29,4 +29,4 @@ Gives you the following output:
      :page_count=>12,
      :encrypted=>false}
    
-Each of the pages has an individual size - that's just how PDFs are. If you want more of the metadata that pdfinfo outputs, send us a patch.
+Each of the pages has an individual size in PDF points - that's just how PDFs are. If you want more of the metadata that pdfinfo outputs, send us a patch.
