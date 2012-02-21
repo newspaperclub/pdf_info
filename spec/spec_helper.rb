@@ -1,6 +1,5 @@
-$LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
-$LOAD_PATH.unshift(File.dirname(__FILE__))
-require 'rspec'
+require 'rubygems'
+require 'bundler/setup'
 require 'pdf/info'
 
 # Requires supporting files with custom matchers and macros, etc,

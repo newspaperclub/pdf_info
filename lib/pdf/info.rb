@@ -61,17 +61,17 @@ module PDF
         when "PDF version"
           metadata[:version] = pair.last.to_f
         when "Title"
-          metadata[:title] = pair.last.to_s
+          metadata[:title] = pair.last.to_s.strip
         when "Creator"
-          metadata[:creator] = pair.last.to_s
+          metadata[:creator] = pair.last.to_s.strip
         when "Producer"
-          metadata[:producer] = pair.last.to_s
+          metadata[:producer] = pair.last.to_s.strip
         when "Subject"
-          metadata[:subject] = pair.last.to_s
+          metadata[:subject] = pair.last.to_s.strip
         when /^Page.*size$/
           metadata[:pages] ||= []
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
-          metadata[:format] = pair.last.scan(.*\(\w+\)$).to_s
+          metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
         end
       end
       return metadata

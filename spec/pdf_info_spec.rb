@@ -87,4 +87,20 @@ describe PDF::Info do
     end
   end
 
+  describe "running on sample.pdf" do
+    subject do
+      PDF::Info.command_path = "pdfinfo"
+      PDF::Info.new(File.join(File.dirname(__FILE__), 'assets', 'sample.pdf')).metadata
+    end
+
+    its([:page_count]) { should == 1 }
+    its([:creator]) { should == "PScript5.dll Version 5.2.2" }
+    its([:version]) { should == 1.4 }
+    its([:title]) { should == "Microsoft Word - sample.pdf.docx" }
+    its([:encrypted]) { should == false }
+    its([:optimized]) { should == false }
+    its([:producer]) { should == "GPL Ghostscript 8.15" }
+    its([:subject]) { should be_nil }
+  end
+
 end
