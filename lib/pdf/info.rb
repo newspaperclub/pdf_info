@@ -58,13 +58,15 @@ module PDF
           metadata[:encrypted] = pair.last == 'yes'
         when "Optimized"
           metadata[:optimized] = pair.last == 'yes'
+        when "Tagged"
+          metadata[:tagged] = pair.last == 'yes'
         when "PDF version"
           metadata[:version] = pair.last.to_f
         when /^Page.*size$/
           metadata[:pages] ||= []
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
           metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
-        else
+        when String
           metadata[pair.first.downcase.tr(" ", "-").to_sym] = pair.last.to_s.strip
         end
       end
