@@ -74,7 +74,8 @@ module PDF
           metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
         end
       end
-      return metadata
+
+      metadata
     end
 
   end
