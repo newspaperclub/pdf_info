@@ -60,18 +60,12 @@ module PDF
           metadata[:optimized] = pair.last == 'yes'
         when "PDF version"
           metadata[:version] = pair.last.to_f
-        when "Title"
-          metadata[:title] = pair.last.to_s.strip
-        when "Creator"
-          metadata[:creator] = pair.last.to_s.strip
-        when "Producer"
-          metadata[:producer] = pair.last.to_s.strip
-        when "Subject"
-          metadata[:subject] = pair.last.to_s.strip
         when /^Page.*size$/
           metadata[:pages] ||= []
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
           metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
+        else
+          metadata[pair.first.downcase.tr(" ", "-").to_sym] = pair.last.to_s.strip
         end
       end
 
