@@ -4,6 +4,7 @@ pdf_info
 Very simple wrapper to the [pdfinfo](http://linuxcommand.org/man_pages/pdfinfo1.html) unix tool, to provide the metadata information as a hash.
 
 [![Build Status](https://travis-ci.org/newspaperclub/pdf_info.png)](https://travis-ci.org/newspaperclub/pdf_info)
+[![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/newspaperclub/pdf_info)
 
 Usage
 --
