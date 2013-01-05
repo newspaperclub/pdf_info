@@ -67,7 +67,7 @@ module PDF
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
           metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
         when String
-          metadata[pair.first.downcase.tr(" ", "-").to_sym] = pair.last.to_s.strip
+          metadata[pair.first.downcase.tr(" ", "_").to_sym] = pair.last.to_s.strip
         end
       end
 
