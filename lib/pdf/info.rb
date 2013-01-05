@@ -20,7 +20,7 @@ module PDF
       output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1`
       exit_code = $? 
       case exit_code
-      when 0
+      when 0 || nil
         return output
       else
         exit_error = PDF::Info::UnexpectedExitError.new
