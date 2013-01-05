@@ -62,6 +62,10 @@ module PDF
           metadata[:tagged] = pair.last == 'yes'
         when "PDF version"
           metadata[:version] = pair.last.to_f
+        when "CreationDate"
+          metadata[:creation_date] = DateTime.parse(pair.last)
+        when "ModDate"
+          metadata[:modification_date] = DateTime.parse(pair.last)
         when /^Page.*size$/
           metadata[:pages] ||= []
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)

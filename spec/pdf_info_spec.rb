@@ -101,6 +101,8 @@ describe PDF::Info do
     its([:optimized]) { should == false }
     its([:producer]) { should == "GPL Ghostscript 8.15" }
     its([:subject]) { should be_nil }
+    its([:creation_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
+    its([:modification_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
   end
 
 end
