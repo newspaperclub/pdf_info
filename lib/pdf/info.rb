@@ -20,7 +20,7 @@ module PDF
       output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1`
       exit_code = $? 
       case exit_code
-      when 0
+      when 0 || nil
         return output
       else
         exit_error = PDF::Info::UnexpectedExitError.new
@@ -58,23 +58,24 @@ module PDF
           metadata[:encrypted] = pair.last == 'yes'
         when "Optimized"
           metadata[:optimized] = pair.last == 'yes'
+        when "Tagged"
+          metadata[:tagged] = pair.last == 'yes'
         when "PDF version"
           metadata[:version] = pair.last.to_f
-        when "Title"
-          metadata[:title] = pair.last.to_s.strip
-        when "Creator"
-          metadata[:creator] = pair.last.to_s.strip
-        when "Producer"
-          metadata[:producer] = pair.last.to_s.strip
-        when "Subject"
-          metadata[:subject] = pair.last.to_s.strip
+        when "CreationDate"
+          metadata[:creation_date] = DateTime.parse(pair.last)
+        when "ModDate"
+          metadata[:modification_date] = DateTime.parse(pair.last)
         when /^Page.*size$/
           metadata[:pages] ||= []
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
           metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
+        when String
+          metadata[pair.first.downcase.tr(" ", "_").to_sym] = pair.last.to_s.strip
         end
       end
-      return metadata
+
+      metadata
     end
 
   end
