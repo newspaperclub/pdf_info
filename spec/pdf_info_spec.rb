@@ -104,7 +104,6 @@ describe PDF::Info do
     its([:author]) { should eq "carlos"}
     its([:creation_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
     its([:modification_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
-    its([:producer]) { should eq "GPL Ghostscript 8.15"}
     its([:tagged]) { should be_false }
     its([:file_size]) { should eq "218882 bytes" }
   end
