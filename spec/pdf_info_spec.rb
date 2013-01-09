@@ -97,10 +97,15 @@ describe PDF::Info do
     its([:creator]) { should == "PScript5.dll Version 5.2.2" }
     its([:version]) { should == 1.4 }
     its([:title]) { should == "Microsoft Word - sample.pdf.docx" }
-    its([:encrypted]) { should == false }
-    its([:optimized]) { should == false }
+    its([:encrypted]) { should be_false }
+    its([:optimized]) { should be_false }
     its([:producer]) { should == "GPL Ghostscript 8.15" }
     its([:subject]) { should be_nil }
+    its([:author]) { should eq "carlos"}
+    its([:creation_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
+    its([:modification_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
+    its([:tagged]) { should be_false }
+    its([:file_size]) { should eq "218882 bytes" }
   end
 
 end
