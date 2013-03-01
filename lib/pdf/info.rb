@@ -17,15 +17,19 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1`
+      output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1 2>&1`.chomp
       exit_code = $? 
       case exit_code
       when 0 || nil
         return output
       else
-        exit_error = PDF::Info::UnexpectedExitError.new
-        exit_error.exit_code = exit_code
-        raise exit_error
+        if (output == PDF::Info::ENCRYPTED_FILE_RESPONSE)
+          raise PDF::Info::EncryptedFileError
+        else
+          exit_error = PDF::Info::UnexpectedExitError.new
+          exit_error.exit_code = exit_code
+          raise exit_error
+        end
       end
     end
 
