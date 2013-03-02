@@ -77,7 +77,7 @@ module PDF
           metadata[:pages][page_number] ||= {}
           metadata[:pages][page_number][:size] = pair.last.scan(/[\d.]+/).map(&:to_f)
           format = pair.last.scan(/\(.*\)$/)
-          metadata[:pages][page_number][:format] = format[0][1...format[0].length-1] unless format.nil? || format.length = 0
+          metadata[:pages][page_number][:format] = format[0][1...format[0].length-1] unless format.nil? || format.length == 0
         when /^Page.*rot$/
           metadata[:pages] ||= []
           page_number = pair.first.split(' ')[1].to_i - 1
