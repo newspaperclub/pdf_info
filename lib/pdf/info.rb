@@ -72,8 +72,17 @@ module PDF
           metadata[:modification_date] = DateTime.parse(pair.last)
         when /^Page.*size$/
           metadata[:pages] ||= []
-          metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
-          metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
+          # Subtract 1 because pdfinfo has pdfs with page 1 at start but arrays are 0 based
+          page_number = pair.first.split(' ')[1].to_i - 1
+          metadata[:pages][page_number] ||= {}
+          metadata[:pages][page_number][:size] = pair.last.scan(/[\d.]+/).map(&:to_f)
+          format = pair.last.scan(/\(.*\)$/)
+          metadata[:pages][page_number][:format] = format[0][1...format[0].length-1] unless format.nil?
+        when /^Page.*rot$/
+          metadata[:pages] ||= []
+          page_number = pair.first.split(' ')[1].to_i - 1
+          metadata[:pages][page_number] ||= {}
+          metadata[:pages][page_number][:rot] = pair.last.to_f
         when String
           metadata[pair.first.downcase.tr(" ", "_").to_sym] = pair.last.to_s.strip
         end
