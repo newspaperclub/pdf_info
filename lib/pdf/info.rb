@@ -93,4 +93,29 @@ module PDF
     end
 
   end
+
+  class TestInfo
+
+    def initialize(page_count)
+      @page_count = page_count
+    end
+
+    def metadata
+      md = {}
+      md[:creation_date] = DateTime.now
+      md[:modification_date] = DateTime.now
+      md[:version] = 1.4
+      md[:tagged] = false
+      md[:optimized] = false
+      md[:encrypted] = false
+      md[:pages] = []
+      md[:page_count] = @page_count
+      0.upto(@page_count - 1) do |idx|
+        md[:pages][idx] = {:size => [612, 792], :format => 'letter', :rot => 0.0}
+      end
+      md
+    end
+  end
+
+
 end
