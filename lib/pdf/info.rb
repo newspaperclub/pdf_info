@@ -17,7 +17,7 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1 2>&1`.chomp
+      output = `#{self.class.command_path} "#{Shellwords.escape(@pdf_path)}" -f 1 -l -1 2>&1`.chomp
       exit_code = $? 
       case exit_code
       when 0 || nil
