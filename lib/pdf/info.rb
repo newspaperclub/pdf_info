@@ -17,7 +17,8 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} "#{Shellwords.escape(@pdf_path)}" -f 1 -l -1 2>&1`.chomp
+      cmd = "#{self.class.command_path} #{Shellwords.escape(@pdf_path)} -f 1 -l -1"
+      output = `#{cmd} 2>&1`.chomp
       exit_code = $? 
       case exit_code
       when 0 || nil
@@ -26,7 +27,7 @@ module PDF
         if (output == PDF::Info::ENCRYPTED_FILE_RESPONSE)
           raise PDF::Info::EncryptedFileError
         else
-          exit_error = PDF::Info::UnexpectedExitError.new
+          exit_error = PDF::Info::UnexpectedExitError.new(output)
           exit_error.exit_code = exit_code
           raise exit_error
         end
@@ -45,7 +46,7 @@ module PDF
         when 3
           raise BadPermissionsError
         else
-          raise UnknownError
+          raise
         end
       end
     end
