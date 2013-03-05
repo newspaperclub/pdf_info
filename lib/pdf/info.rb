@@ -19,6 +19,7 @@ module PDF
     def command
       cmd = "#{self.class.command_path} #{Shellwords.escape(@pdf_path)} -f 1 -l -1"
       output = `#{cmd} 2>&1`.chomp
+      output.force_encoding('UTF-8') # output from pdfinfo is utf-8
       exit_code = $? 
       case exit_code
       when 0 || nil
