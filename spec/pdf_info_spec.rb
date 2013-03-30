@@ -87,6 +87,18 @@ describe PDF::Info do
     end
   end
 
+  describe ".process_output" do
+    subject do
+      PDF::Info.new('test.pdf')
+    end
+
+    it "strips whitespace from metadata pair" do
+      output = "  key with space  :value without space\nkey without space:  value with space  "
+      expected = {:'key_with_space' => 'value without space', :'key_without_space' => 'value with space'}
+      expect(subject.process_output(output)).to include expected
+    end
+  end
+
   describe ".parse_datetime" do
     subject do
       pdf_info = PDF::Info.new('test.pdf')

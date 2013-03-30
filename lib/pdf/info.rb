@@ -52,6 +52,8 @@ module PDF
       metadata = {}
       rows.each do |row|
         pair = row.split(':', 2)
+        pair.map!(&:strip)
+
         case pair.first
         when "Pages"
           metadata[:page_count] = pair.last.to_i
