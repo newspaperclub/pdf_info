@@ -1,3 +1,4 @@
+require 'date' unless defined? DateTime
 require 'pdf/info/exceptions'
 
 module PDF
