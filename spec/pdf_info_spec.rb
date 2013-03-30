@@ -87,6 +87,26 @@ describe PDF::Info do
     end
   end
 
+  describe ".parse_datetime" do
+    subject do
+      pdf_info = PDF::Info.new('test.pdf')
+      pdf_info.stub!(:command).and_return(output('successful.txt'))
+      pdf_info
+    end
+
+    it 'parse standard datetime format' do
+      expect(subject.send(:parse_datetime, '2001-02-03T04:05:06+07:00')).to be_kind_of DateTime
+    end
+
+    it 'parse american datetime format' do
+      expect(subject.send(:parse_datetime, '4/23/2004 18:37:34')).to be_kind_of DateTime
+    end
+
+    it 'return nil if string can not be parsed' do
+      expect(subject.send(:parse_datetime, 'asdf')).to be_nil
+    end
+  end
+
   describe "running on sample.pdf" do
     subject do
       PDF::Info.command_path = "pdfinfo"

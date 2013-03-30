@@ -64,9 +64,11 @@ module PDF
         when "PDF version"
           metadata[:version] = pair.last.to_f
         when "CreationDate"
-          metadata[:creation_date] = DateTime.parse(pair.last)
+          creation_date = parse_datetime(pair.last)
+          metadata[:creation_date] = creation_date if creation_date
         when "ModDate"
-          metadata[:modification_date] = DateTime.parse(pair.last)
+          modification_date = parse_datetime(pair.last)
+          metadata[:modification_date] = modification_date if modification_date
         when /^Page.*size$/
           metadata[:pages] ||= []
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
@@ -77,6 +79,18 @@ module PDF
       end
 
       metadata
+    end
+
+    private
+
+    def parse_datetime(value)
+      DateTime.parse(value)
+    rescue
+      begin
+        DateTime.strptime(value, '%m/%d/%Y %k:%M:%S')
+      rescue
+        nil
+      end
     end
 
   end
