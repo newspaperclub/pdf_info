@@ -92,6 +92,26 @@ describe PDF::Info do
       PDF::Info.new('test.pdf')
     end
 
+    it "symbolizes all keys" do
+      output = "a:foo\nb:bar\nc:baz"
+      [:a, :b, :c].each do |key|
+        expect(subject.process_output(output)).to have_key key
+        expect(subject.process_output(output)).to_not have_key key.to_s
+      end
+    end
+
+    it "downcases key" do
+      output = "I AM ALL CAPITAL:I STAY ALL CAPITAL"
+      expected = {:'i_am_all_capital' => 'I STAY ALL CAPITAL'}
+      expect(subject.process_output(output)).to include expected
+    end
+
+    it "replaces whitespace in key with underscore" do
+      output = "key with space:value without underscore"
+      expected = {:'key_with_space' => 'value without underscore'}
+      expect(subject.process_output(output)).to include expected
+    end
+
     it "strips whitespace from metadata pair" do
       output = "  key with space  :value without space\nkey without space:  value with space  "
       expected = {:'key_with_space' => 'value without space', :'key_without_space' => 'value with space'}
