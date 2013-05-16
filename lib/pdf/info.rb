@@ -18,15 +18,21 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1`
+      cmd = "#{self.class.command_path} #{Shellwords.escape(@pdf_path)} -f 1 -l -1"
+      output = `#{cmd} 2>&1`.chomp
+      output.force_encoding('UTF-8') # output from pdfinfo is utf-8
       exit_code = $? 
       case exit_code
       when 0 || nil
         return output
       else
-        exit_error = PDF::Info::UnexpectedExitError.new
-        exit_error.exit_code = exit_code
-        raise exit_error
+        if (output == PDF::Info::ENCRYPTED_FILE_RESPONSE)
+          raise PDF::Info::EncryptedFileError
+        else
+          exit_error = PDF::Info::UnexpectedExitError.new(output)
+          exit_error.exit_code = exit_code
+          raise exit_error
+        end
       end
     end
 
@@ -42,7 +48,7 @@ module PDF
         when 3
           raise BadPermissionsError
         else
-          raise UnknownError
+          raise
         end
       end
     end
@@ -73,8 +79,17 @@ module PDF
           metadata[:modification_date] = modification_date if modification_date
         when /^Page.*size$/
           metadata[:pages] ||= []
-          metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
-          metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
+          # Subtract 1 because pdfinfo has pdfs with page 1 at start but arrays are 0 based
+          page_number = pair.first.split(' ')[1].to_i - 1
+          metadata[:pages][page_number] ||= {}
+          metadata[:pages][page_number][:size] = pair.last.scan(/[\d.]+/).map(&:to_f)
+          format = pair.last.scan(/\(.*\)$/)
+          metadata[:pages][page_number][:format] = format[0][1...format[0].length-1] unless format.nil? || format.length == 0
+        when /^Page.*rot$/
+          metadata[:pages] ||= []
+          page_number = pair.first.split(' ')[1].to_i - 1
+          metadata[:pages][page_number] ||= {}
+          metadata[:pages][page_number][:rot] = pair.last.to_f
         when String
           metadata[pair.first.downcase.tr(" ", "_").to_sym] = pair.last.to_s.strip
         end
@@ -96,4 +111,29 @@ module PDF
     end
 
   end
+
+  class TestInfo
+
+    def initialize(page_count)
+      @page_count = page_count
+    end
+
+    def metadata
+      md = {}
+      md[:creation_date] = DateTime.now
+      md[:modification_date] = DateTime.now
+      md[:version] = 1.4
+      md[:tagged] = false
+      md[:optimized] = false
+      md[:encrypted] = false
+      md[:pages] = []
+      md[:page_count] = @page_count
+      0.upto(@page_count - 1) do |idx|
+        md[:pages][idx] = {:size => [612, 792], :format => 'letter', :rot => 0.0}
+      end
+      md
+    end
+  end
+
+
 end

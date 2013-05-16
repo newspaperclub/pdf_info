@@ -160,4 +160,18 @@ describe PDF::Info do
     its([:file_size]) { should eq "218882 bytes" }
   end
 
+  describe "running on encrypted.pdf" do
+   
+   context "error reading metadata" do
+      before(:each) do 
+        PDF::Info.command_path = "pdfinfo"
+        @pdf_info = PDF::Info.new(File.join(File.dirname(__FILE__), 'assets', 'encrypted.pdf'))
+      end
+
+      it "should raise an encrypted file error" do
+        lambda { @pdf_info.metadata }.should raise_error(PDF::Info::EncryptedFileError)
+      end
+    end
+  end
+
 end
