@@ -5,13 +5,8 @@ rvm:
  - 2.0.0
  - ruby-head
  - jruby
- - rbx
  - ree
 
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq -y poppler-utils poppler-data
-
-matrix:
-  allow_failures:
-    - rvm: rbx
