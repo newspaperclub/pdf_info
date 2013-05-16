@@ -87,6 +87,58 @@ describe PDF::Info do
     end
   end
 
+  describe ".process_output" do
+    subject do
+      PDF::Info.new('test.pdf')
+    end
+
+    it "symbolizes all keys" do
+      output = "a:foo\nb:bar\nc:baz"
+      [:a, :b, :c].each do |key|
+        expect(subject.process_output(output)).to have_key key
+        expect(subject.process_output(output)).to_not have_key key.to_s
+      end
+    end
+
+    it "downcases key" do
+      output = "I AM ALL CAPITAL:I STAY ALL CAPITAL"
+      expected = {:'i_am_all_capital' => 'I STAY ALL CAPITAL'}
+      expect(subject.process_output(output)).to include expected
+    end
+
+    it "replaces whitespace in key with underscore" do
+      output = "key with space:value without underscore"
+      expected = {:'key_with_space' => 'value without underscore'}
+      expect(subject.process_output(output)).to include expected
+    end
+
+    it "strips whitespace from metadata pair" do
+      output = "  key with space  :value without space\nkey without space:  value with space  "
+      expected = {:'key_with_space' => 'value without space', :'key_without_space' => 'value with space'}
+      expect(subject.process_output(output)).to include expected
+    end
+  end
+
+  describe ".parse_datetime" do
+    subject do
+      pdf_info = PDF::Info.new('test.pdf')
+      pdf_info.stub!(:command).and_return(output('successful.txt'))
+      pdf_info
+    end
+
+    it 'parse standard datetime format' do
+      expect(subject.send(:parse_datetime, '2001-02-03T04:05:06+07:00')).to be_kind_of DateTime
+    end
+
+    it 'parse american datetime format' do
+      expect(subject.send(:parse_datetime, '4/23/2004 18:37:34')).to be_kind_of DateTime
+    end
+
+    it 'return nil if string can not be parsed' do
+      expect(subject.send(:parse_datetime, 'asdf')).to be_nil
+    end
+  end
+
   describe "running on sample.pdf" do
     subject do
       PDF::Info.command_path = "pdfinfo"
