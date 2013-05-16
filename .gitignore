@@ -4,3 +4,4 @@ doc
 .bundle
 pkg
 Gemfile.lock
+*.gem
