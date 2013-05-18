@@ -1,3 +1,4 @@
+require 'date'
 require 'pdf/info/exceptions'
 
 module PDF
