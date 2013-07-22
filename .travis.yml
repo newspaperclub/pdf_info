@@ -7,6 +7,13 @@ rvm:
  - jruby
  - ree
 
+matrix:
+  allow_failures:
+    - rvm: ruby-head
+    - rvm: 1.8.7
+    - rvm: jruby
+    - rvm: ree
+
 before_install:
  - sudo apt-get update -qq
  - sudo apt-get install -qq -y poppler-utils poppler-data
