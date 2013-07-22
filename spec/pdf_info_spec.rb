@@ -1,3 +1,4 @@
+# encoding: utf-8
 require 'spec_helper'
 
 describe PDF::Info do
@@ -158,6 +159,20 @@ describe PDF::Info do
     its([:modification_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
     its([:tagged]) { should be_false }
     its([:file_size]) { should eq "218882 bytes" }
+  end
+
+  describe "running on a file with invalid utf-8 metadata" do
+    subject do
+      PDF::Info.command_path = "pdfinfo"
+      PDF::Info.new(File.join(File.dirname(__FILE__), 'assets', 'invalid-utf8.pdf')).metadata
+    end
+
+    its([:page_count]) { should == 12 }
+    its([:title]) { should eq "图形1.CDR" }
+    # the two date fields are badly encoded in this file, so the DateTime parse
+    # will fail, and we'll have a nil in these fields
+    its([:creation_date]) { should be_nil }
+    its([:modification_date]) { should be_nil }
   end
 
 end

@@ -18,10 +18,16 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} "#{@pdf_path}" -f 1 -l -1`
+      output = `#{self.class.command_path} -enc UTF-8 "#{@pdf_path}" -f 1 -l -1`
       exit_code = $? 
       case exit_code
       when 0 || nil
+        if !output.valid_encoding?
+          # It's already UTF-8, so we need to convert to UTF-16 and back to
+          # force the bad characters to be replaced.
+          output.encode!('UTF-16', :undef => :replace, :invalid => :replace, :replace => "")
+          output.encode!('UTF-8')
+        end
         return output
       else
         exit_error = PDF::Info::UnexpectedExitError.new
