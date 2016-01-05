@@ -19,7 +19,7 @@ module PDF
 
     def command
       output = `#{self.class.command_path} -enc UTF-8 "#{@pdf_path}" -f 1 -l -1 2> /dev/null`
-      exit_code = $?
+      exit_code = $?.exitstatus
       case exit_code
       when 0 || nil
         if !output.valid_encoding?
