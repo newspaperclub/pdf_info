@@ -13,9 +13,8 @@ module PDF
       @@command_path
     end
 
-    def initialize(pdf_path, command_path='pdfinfo')
+    def initialize(pdf_path)
       @pdf_path = pdf_path
-      @@command_path = command_path
     end
 
     def command
