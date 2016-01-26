@@ -13,12 +13,13 @@ module PDF
       @@command_path
     end
 
-    def initialize(pdf_path)
+    def initialize(pdf_path, command_path='pdfinfo')
       @pdf_path = pdf_path
+      @@command_path = command_path
     end
 
     def command
-      output = `#{self.class.command_path} -enc UTF-8 "#{@pdf_path}" -f 1 -l -1 2> /dev/null`
+      output = `#{self.class.command_path} -enc UTF-8 -f 1 -l -1 "#{@pdf_path}" 2> /dev/null`
       exit_code = $?
       case exit_code
       when 0 || nil
