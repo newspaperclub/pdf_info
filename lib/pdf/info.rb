@@ -64,11 +64,11 @@ module PDF
         when "Pages"
           metadata[:page_count] = pair.last.to_i
         when "Encrypted"
-          metadata[:encrypted] = pair.last == 'yes'
+          metadata[:encrypted] = pair.last.start_with?('yes')
         when "Optimized"
-          metadata[:optimized] = pair.last == 'yes'
+          metadata[:optimized] = pair.last.start_with?('yes')
         when "Tagged"
-          metadata[:tagged] = pair.last == 'yes'
+          metadata[:tagged] = pair.last.start_with?('yes')
         when "PDF version"
           metadata[:version] = pair.last.to_f
         when "CreationDate"
