@@ -18,8 +18,8 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} -enc UTF-8 "#{@pdf_path}" -f 1 -l -1 2> /dev/null`
-      exit_code = $?.exitstatus
+      output = `#{self.class.command_path} -enc UTF-8 -f 1 -l -1 "#{@pdf_path}" 2> /dev/null`
+      exit_code = $?
       case exit_code
       when 0 || nil
         if !output.valid_encoding?
@@ -64,11 +64,11 @@ module PDF
         when "Pages"
           metadata[:page_count] = pair.last.to_i
         when "Encrypted"
-          metadata[:encrypted] = pair.last.start_with?('yes')
+          metadata[:encrypted] = pair.last == 'yes'
         when "Optimized"
-          metadata[:optimized] = pair.last.start_with?('yes')
+          metadata[:optimized] = pair.last == 'yes'
         when "Tagged"
-          metadata[:tagged] = pair.last.start_with?('yes')
+          metadata[:tagged] = pair.last == 'yes'
         when "PDF version"
           metadata[:version] = pair.last.to_f
         when "CreationDate"
