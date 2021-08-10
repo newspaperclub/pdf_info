@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
 
   s.rubyforge_project = "pdf_info"
 
-  s.files         = `git ls-files`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")  
+  s.files         = `find . -type f`.split("\n").map {|path| path.sub('./', '') }
+  s.executables   = []
+  s.test_files    = []
   s.require_paths = ["lib"]
 
   s.add_development_dependency "rake"
-  s.add_development_dependency "rspec", '~> 2.12.0'
+  s.add_development_dependency "rspec"#, '~> 2.12.0'
 end
