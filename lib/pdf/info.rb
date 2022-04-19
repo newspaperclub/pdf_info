@@ -18,7 +18,8 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} -enc UTF-8 -f 1 -l -1 "#{@pdf_path}" 2> /dev/null`
+      null_redirect = Gem.win_platform? ? 'nul' : '/dev/null'
+      output = `#{self.class.command_path} -enc UTF-8 -f 1 -l -1 "#{@pdf_path}" 2> #{null_redirect}`
       exit_code = $?
       case exit_code
       when 0 || nil
