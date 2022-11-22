@@ -155,8 +155,8 @@ describe PDF::Info do
     its([:producer]) { should == "GPL Ghostscript 8.15" }
     its([:subject]) { should be_nil }
     its([:author]) { should eq "carlos"}
-    its([:creation_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
-    its([:modification_date]) { should eq DateTime.parse("2010-10-09T10:29:55+00:00")}
+    its([:creation_date]) { should eq DateTime.parse("2010-10-09T12:29:55+01:00").new_offset(0) }
+    its([:modification_date]) { should eq DateTime.parse("2010-10-09T12:29:55+01:00").new_offset(0) }
     its([:tagged]) { should be_false }
     its([:file_size]) { should eq "218882 bytes" }
   end
