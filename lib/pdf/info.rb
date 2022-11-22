@@ -82,7 +82,11 @@ module PDF
           metadata[:pages] << pair.last.scan(/[\d.]+/).map(&:to_f)
           metadata[:format] = pair.last.scan(/.*\(\w+\)$/).to_s
         when String
-          metadata[pair.first.downcase.tr(" ", "_").to_sym] = pair.last.to_s.strip
+          # For a specific key, take the first value, and don't allow later keys to overwrite it
+          # This prevents later declarations of 'Title' from overwriting the title of the document.
+          key = pair.first.downcase.tr(" ", "_").to_sym
+          value = pair.last.to_s.strip
+          metadata[key] = value unless metadata[key]
         end
       end
 
