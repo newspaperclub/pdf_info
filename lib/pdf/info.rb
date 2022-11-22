@@ -1,5 +1,6 @@
 require 'date' unless defined? DateTime
 require 'pdf/info/exceptions'
+require 'open3'
 
 module PDF
   class Info
@@ -18,20 +19,19 @@ module PDF
     end
 
     def command
-      output = `#{self.class.command_path} -enc UTF-8 -f 1 -l -1 "#{@pdf_path}" 2> /dev/null`
-      exit_code = $?
-      case exit_code
-      when 0 || nil
-        if !output.valid_encoding?
+      stdout, stderr, status = Open3.capture3(self.class.command_path, "-enc", "UTF-8", "-f", "1", "-l", "-1", @pdf_path)
+
+      if status.success?
+        if !stdout.valid_encoding?
           # It's already UTF-8, so we need to convert to UTF-16 and back to
           # force the bad characters to be replaced.
-          output.encode!('UTF-16', :undef => :replace, :invalid => :replace, :replace => "")
-          output.encode!('UTF-8')
+          stdout.encode!('UTF-16', :undef => :replace, :invalid => :replace, :replace => "")
+          stdout.encode!('UTF-8')
         end
-        return output
+        return stdout
       else
         exit_error = PDF::Info::UnexpectedExitError.new
-        exit_error.exit_code = exit_code
+        exit_error.exit_code = status.exitstatus
         raise exit_error
       end
     end
