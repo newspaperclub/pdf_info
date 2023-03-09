@@ -14,7 +14,12 @@ module PDF
     end
 
     def initialize(pdf_path)
-      @pdf_path = pdf_path
+      if pdf_path.match(/[^a-z^A-Z^0-9\^_^.^-^\/]+/)
+        print "Your file name must only contain letters, digits and - _ / .\n"
+        raise exit_error
+      else
+        @pdf_path = pdf_path
+      end
     end
 
     def command
